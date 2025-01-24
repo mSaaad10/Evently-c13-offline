@@ -1,6 +1,7 @@
 import 'package:evently_c13_offline/core/assets_manager.dart';
 import 'package:evently_c13_offline/core/colors_manager.dart';
 import 'package:evently_c13_offline/core/email_validation.dart';
+import 'package:evently_c13_offline/core/routes_manager/routes.dart';
 import 'package:evently_c13_offline/core/widgets/custom_elvated_button.dart';
 import 'package:evently_c13_offline/core/widgets/custom_text_button.dart';
 import 'package:evently_c13_offline/core/widgets/custom_text_form_field.dart';
@@ -109,7 +110,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       CustomTextButton(
-                          onPress: () {}, textButton: "Create Account")
+                          onPress: () {
+                            Navigator.pushNamed(context, Routes.register);
+                          },
+                          textButton: "Create Account")
                     ],
                   ),
                   const SizedBox(

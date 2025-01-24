@@ -4,8 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static final ThemeData light = ThemeData(
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
+          scrolledUnderElevation: 0,
           color: ColorsManager.white,
+          centerTitle: true,
+          titleTextStyle: GoogleFonts.inter(
+              color: ColorsManager.black,
+              fontWeight: FontWeight.w700,
+              fontSize: 22),
           iconTheme: IconThemeData(color: ColorsManager.black)),
       scaffoldBackgroundColor: ColorsManager.white,
       inputDecorationTheme: InputDecorationTheme(
