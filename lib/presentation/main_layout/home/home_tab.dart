@@ -1,6 +1,7 @@
 import 'package:evently_c13_offline/core/colors_manager.dart';
 import 'package:evently_c13_offline/model/category_DM.dart';
-import 'package:evently_c13_offline/presentation/main_layout/home/tab_widget.dart';
+import 'package:evently_c13_offline/presentation/main_layout/home/widget/event_card.dart';
+import 'package:evently_c13_offline/presentation/main_layout/home/widget/tab_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -63,6 +64,10 @@ class _HomeTabState extends State<HomeTab> {
                       tabs: categories
                           .map(
                             (category) => TabWidget(
+                                selectedContentColor: ColorsManager.primary,
+                                unSelectedContentColor: ColorsManager.white,
+                                selectedBgColor: ColorsManager.white,
+                                unSelectedBgColor: Colors.transparent,
                                 categoryDM: category,
                                 isSelected: categories.indexOf(category) ==
                                     selectedIndex),
@@ -72,7 +77,12 @@ class _HomeTabState extends State<HomeTab> {
               ],
             ),
           ),
-        )
+        ),
+        Expanded(
+            child: ListView.builder(
+          itemBuilder: (context, index) => EventCard(),
+          itemCount: 10,
+        ))
       ],
     );
   }

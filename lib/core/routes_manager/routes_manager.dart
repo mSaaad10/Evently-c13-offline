@@ -1,6 +1,7 @@
 import 'package:evently_c13_offline/core/routes_manager/routes.dart';
 import 'package:evently_c13_offline/presentation/auth/login/login.dart';
 import 'package:evently_c13_offline/presentation/auth/register/register.dart';
+import 'package:evently_c13_offline/presentation/create_event.dart';
 import 'package:evently_c13_offline/presentation/main_layout/main_layout.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,10 @@ class RoutesManager {
       case Routes.mainLayOut:
         return MaterialPageRoute(
           builder: (context) => MAinLayOut(),
+        );
+      case Routes.createEvent:
+        return MaterialPageRoute(
+          builder: (context) => CreateEvent(),
         );
       // default:
       //   return unDefinedRoute();

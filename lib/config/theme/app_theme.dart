@@ -1,18 +1,25 @@
 import 'package:evently_c13_offline/core/colors_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static final ThemeData light = ThemeData(
       useMaterial3: false,
       appBarTheme: AppBarTheme(
+        iconTheme: IconThemeData(color: ColorsManager.primary),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          // Status bar color
+          statusBarColor: Colors.transparent,
+        ),
         scrolledUnderElevation: 0,
         color: ColorsManager.white,
+        elevation: 0,
         centerTitle: true,
         titleTextStyle: GoogleFonts.inter(
-            color: ColorsManager.black,
-            fontWeight: FontWeight.w700,
-            fontSize: 22),
+            color: ColorsManager.primary,
+            fontWeight: FontWeight.w400,
+            fontSize: 18),
       ),
       scaffoldBackgroundColor: ColorsManager.white,
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -66,18 +73,43 @@ class AppTheme {
               backgroundColor: ColorsManager.primary,
               foregroundColor: ColorsManager.white,
               textStyle:
-              GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 20),
+                  GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 20),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ))),
       textTheme: TextTheme(
-          bodySmall: GoogleFonts.inter(
-              fontSize: 16,
-              color: ColorsManager.black,
-              fontWeight: FontWeight.w500),
-          bodyMedium: GoogleFonts.inter(
-              fontSize: 20,
-              color: ColorsManager.primary,
-              fontWeight: FontWeight.w500)));
+        bodySmall: GoogleFonts.inter(
+            fontSize: 16,
+            color: ColorsManager.black,
+            fontWeight: FontWeight.w500),
+        bodyMedium: GoogleFonts.inter(
+            fontSize: 20,
+            color: ColorsManager.primary,
+            fontWeight: FontWeight.w500),
+        bodyLarge: GoogleFonts.inter(
+            fontSize: 16,
+            color: ColorsManager.primary,
+            fontWeight: FontWeight.w500),
+        labelSmall: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: ColorsManager.black),
+        labelMedium: GoogleFonts.inter(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: ColorsManager.primary),
+        labelLarge: GoogleFonts.inter(
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            color: ColorsManager.white),
+        titleSmall: GoogleFonts.inter(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: ColorsManager.white),
+        headlineMedium: GoogleFonts.inter(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: ColorsManager.black),
+      ));
   static final ThemeData dark = ThemeData();
 }

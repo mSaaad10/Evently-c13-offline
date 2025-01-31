@@ -1,3 +1,4 @@
+import 'package:evently_c13_offline/core/routes_manager/routes.dart';
 import 'package:evently_c13_offline/presentation/main_layout/home/home_tab.dart';
 import 'package:evently_c13_offline/presentation/main_layout/love/love.dart';
 import 'package:evently_c13_offline/presentation/main_layout/map/maps_tab.dart';
@@ -25,7 +26,9 @@ class _MAinLayOutState extends State<MAinLayOut> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, Routes.createEvent);
+        },
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -35,11 +38,11 @@ class _MAinLayOutState extends State<MAinLayOut> {
   }
 
   buildBottomNavBar() => BottomAppBar(
-        notchMargin: 6,
-        child: BottomNavigationBar(
-            onTap: (index) {
-              selectedIndex = index;
-              setState(() {});
+    notchMargin: 6,
+    child: BottomNavigationBar(
+        onTap: (index) {
+          selectedIndex = index;
+          setState(() {});
             },
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -50,4 +53,10 @@ class _MAinLayOutState extends State<MAinLayOut> {
                   icon: Icon(Icons.person), label: 'Profile'),
             ]),
       );
+
+// void showCreateEventBottomSheet() {
+//   showModalBottomSheet(
+//       isScrollControlled: true,
+//       context: context, builder: (context) => CreateEvent());
+// }
 }

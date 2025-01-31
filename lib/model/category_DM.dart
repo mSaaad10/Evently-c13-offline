@@ -13,6 +13,8 @@ class CategoryDM {
       required this.imagePath,
       required this.iconName});
 
+  static List<CategoryDM> categories = getCategories();
+
   static List<CategoryDM> getCategories() => [
         CategoryDM(
           id: '0',
