@@ -4,16 +4,30 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static final ThemeData light = ThemeData(
+      useMaterial3: false,
       appBarTheme: AppBarTheme(
-          scrolledUnderElevation: 0,
-          color: ColorsManager.white,
-          centerTitle: true,
-          titleTextStyle: GoogleFonts.inter(
-              color: ColorsManager.black,
-              fontWeight: FontWeight.w700,
-              fontSize: 22),
-          iconTheme: IconThemeData(color: ColorsManager.black)),
+        scrolledUnderElevation: 0,
+        color: ColorsManager.white,
+        centerTitle: true,
+        titleTextStyle: GoogleFonts.inter(
+            color: ColorsManager.black,
+            fontWeight: FontWeight.w700,
+            fontSize: 22),
+      ),
       scaffoldBackgroundColor: ColorsManager.white,
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: ColorsManager.white,
+        unselectedItemColor: ColorsManager.white,
+      ),
+      bottomAppBarTheme: BottomAppBarTheme(
+          shape: CircularNotchedRectangle(), color: ColorsManager.primary),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: ColorsManager.primary,
+        shape: StadiumBorder(side: BorderSide(width: 4, color: Colors.white)),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: GoogleFonts.inter(
             color: ColorsManager.grey,
@@ -52,7 +66,7 @@ class AppTheme {
               backgroundColor: ColorsManager.primary,
               foregroundColor: ColorsManager.white,
               textStyle:
-                  GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 20),
+              GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 20),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ))),
