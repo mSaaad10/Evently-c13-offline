@@ -1,7 +1,13 @@
 import 'package:evently_c13_offline/core/assets_manager.dart';
+import 'package:evently_c13_offline/core/dialog_utils.dart';
 import 'package:evently_c13_offline/core/email_validation.dart';
+import 'package:evently_c13_offline/core/firebase_error_codes.dart';
 import 'package:evently_c13_offline/core/routes_manager/routes.dart';
+import 'package:evently_c13_offline/core/string_manager.dart';
 import 'package:evently_c13_offline/core/widgets/custom_elvated_button.dart';
+import 'package:evently_c13_offline/firebase_helpers/firestore/firestore_helpers.dart';
+import 'package:evently_c13_offline/model/user_DM.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/widgets/custom_text_button.dart';
@@ -207,11 +213,59 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  void register() {
+  void register() async {
     // check fields is valid
     // login
     if (formKey.currentState?.validate() == false) return;
 
     // login user
+
+    try {
+      DialogUtils.showLoadingDialog(context,
+          loadingMessage: StringsManager.wait);
+      UserCredential credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      await createUser(credential.user!.uid);
+      DialogUtils.hideDialog(context);
+      DialogUtils.showMessageDialog(context,
+          content: StringsManager.userRegisteredSuccessfully,
+          posActionTitle: "Ok", posAction: () {
+        Navigator.pushReplacementNamed(context, Routes.login);
+      });
+    } on FirebaseAuthException catch (ex) {
+      DialogUtils.hideDialog(context);
+      if (ex.code == FirebaseErrorCodes.weakPassword) {
+        DialogUtils.showMessageDialog(
+          context,
+          title: "Error Occurred",
+          content: "The password provided is too weak.",
+          negActionTitle: "try again",
+        );
+      } else if (ex.code == FirebaseErrorCodes.emailInUse) {
+        DialogUtils.showMessageDialog(
+          context,
+          title: "Error Occurred",
+          content: "Email already exist",
+          negActionTitle: "try again",
+        );
+      }
+    } catch (e) {
+      DialogUtils.hideDialog(context);
+      DialogUtils.showMessageDialog(
+        context,
+        title: "Error Occurred",
+        content: "${e.toString()}",
+        negActionTitle: "try again",
+      );
+    }
+  }
+
+  Future<void> createUser(String userId) {
+    UserDM userDM = UserDM(
+        id: userId, userName: nameController.text, email: emailController.text);
+    return FireStoreHelpers.addUserToFireStore(userDM);
   }
 }

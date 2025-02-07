@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "428749501271",
+    "project_id": "envent-planning-app",
+    "storage_bucket": "envent-planning-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428749501271:android:fc7ff93838aa9e8cdc8412",
+        "android_client_info": {
+          "package_name": "com.example.evently_c13_offline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB9CWOktbt63nc4dhRJPLc8qpf8ElDuYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,10 +1,15 @@
 import 'package:evently_c13_offline/core/assets_manager.dart';
 import 'package:evently_c13_offline/core/colors_manager.dart';
+import 'package:evently_c13_offline/core/dialog_utils.dart';
 import 'package:evently_c13_offline/core/email_validation.dart';
+import 'package:evently_c13_offline/core/firebase_error_codes.dart';
 import 'package:evently_c13_offline/core/routes_manager/routes.dart';
 import 'package:evently_c13_offline/core/widgets/custom_elvated_button.dart';
 import 'package:evently_c13_offline/core/widgets/custom_text_button.dart';
 import 'package:evently_c13_offline/core/widgets/custom_text_form_field.dart';
+import 'package:evently_c13_offline/firebase_helpers/firestore/firestore_helpers.dart';
+import 'package:evently_c13_offline/model/user_DM.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -150,11 +155,43 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void login() {
+  void login() async {
     // check fields is valid
     // login
     if (formKey.currentState?.validate() == false) return;
 
     // login user
+
+    try {
+      DialogUtils.showLoadingDialog(context, loadingMessage: "wait...");
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+
+      UserDM? user =
+          await FireStoreHelpers.readUSerFromFireStore(credential.user!.uid);
+      print("Logged User Name : ${user?.userName}");
+      DialogUtils.hideDialog(context);
+      DialogUtils.showMessageDialog(
+        context,
+        content: "User Logged in successfully",
+        posActionTitle: "Ok",
+        posAction: () {
+          Navigator.pushReplacementNamed(context, Routes.mainLayOut);
+        },
+      );
+    } on FirebaseAuthException catch (e) {
+      DialogUtils.hideDialog(context);
+      if (e.code == FirebaseErrorCodes.invalidCredential) {
+        DialogUtils.showMessageDialog(
+          context,
+          content: "Wrong email or password",
+          negActionTitle: "try again",
+        );
+      }
+    } catch (e) {
+      DialogUtils.hideDialog(context);
+      DialogUtils.showMessageDialog(context,
+          content: "${e.toString()}", posActionTitle: "Ok");
+    }
   }
 }
