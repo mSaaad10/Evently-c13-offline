@@ -167,9 +167,9 @@ class _LoginScreenState extends State<LoginScreen> {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
 
-      UserDM? user =
+      UserDM.currentUser =
           await FireStoreHelpers.readUSerFromFireStore(credential.user!.uid);
-      print("Logged User Name : ${user?.userName}");
+      // print("Logged User Name : ${user?.userName}");
       DialogUtils.hideDialog(context);
       DialogUtils.showMessageDialog(
         context,

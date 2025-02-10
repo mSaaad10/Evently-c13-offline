@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evently_c13_offline/model/eventDM.dart';
 import 'package:evently_c13_offline/model/user_DM.dart';
 
 class FireStoreHelpers {
@@ -36,5 +37,27 @@ class FireStoreHelpers {
     var userSnapshot = await userDoc.get();
     UserDM? userDM = userSnapshot.data();
     return userDM;
+  }
+
+  static Future<void> addEventToFireStore(EventDM eventDM) {
+    CollectionReference eventsCollection =
+        FirebaseFirestore.instance.collection(EventDM.collectionName);
+    return eventsCollection.add(eventDM.toJson());
+  }
+
+  static Future<List<EventDM>> getEventsFromFireStoreByCategory(
+      String categoryName) async {
+    CollectionReference eventsCollection =
+        FirebaseFirestore.instance.collection(EventDM.collectionName);
+    var collectionSnapshot =
+        await eventsCollection.where("category", isEqualTo: categoryName).get();
+    var documents = collectionSnapshot.docs;
+    List<EventDM> events = documents
+        .map(
+          (docSnapshot) =>
+              EventDM.fromJson(docSnapshot.data() as Map<String, dynamic>),
+        )
+        .toList();
+    return events;
   }
 }

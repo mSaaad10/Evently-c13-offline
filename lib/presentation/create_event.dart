@@ -1,8 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently_c13_offline/core/assets_manager.dart';
 import 'package:evently_c13_offline/core/colors_manager.dart';
+import 'package:evently_c13_offline/core/dialog_utils.dart';
+import 'package:evently_c13_offline/core/utils/date_utils.dart';
 import 'package:evently_c13_offline/core/widgets/custom_elvated_button.dart';
 import 'package:evently_c13_offline/core/widgets/custom_text_form_field.dart';
+import 'package:evently_c13_offline/firebase_helpers/firestore/firestore_helpers.dart';
 import 'package:evently_c13_offline/model/category_DM.dart';
+import 'package:evently_c13_offline/model/eventDM.dart';
+import 'package:evently_c13_offline/model/user_DM.dart';
 import 'package:evently_c13_offline/presentation/main_layout/home/widget/tab_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +21,28 @@ class CreateEvent extends StatefulWidget {
 
 class _CreateEventState extends State<CreateEvent> {
   int selectedIndex = 0;
+  late TextEditingController titleController;
+
+  late TextEditingController descriptionController;
+  DateTime pickedDate = DateTime.now();
+  TimeOfDay pickedTime = TimeOfDay.now();
+  DateTime finalTime = DateTime.now();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    titleController = TextEditingController();
+    descriptionController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +82,15 @@ class _CreateEventState extends State<CreateEvent> {
                     tabs: CategoryDM.categories
                         .map(
                           (category) => TabWidget(
-                              selectedContentColor: ColorsManager.white,
-                              unSelectedContentColor: ColorsManager.primary,
-                              selectedBgColor: ColorsManager.primary,
-                              unSelectedBgColor: Colors.transparent,
-                              categoryDM: category,
-                              isSelected:
-                                  CategoryDM.categories.indexOf(category) ==
-                                      selectedIndex),
-                        )
+                          selectedContentColor: ColorsManager.white,
+                          unSelectedContentColor: ColorsManager.primary,
+                          selectedBgColor: ColorsManager.primary,
+                          unSelectedBgColor: Colors.transparent,
+                          categoryDM: category,
+                          isSelected:
+                          CategoryDM.categories.indexOf(category) ==
+                              selectedIndex),
+                    )
                         .toList()),
               ),
               Text(
@@ -75,7 +103,7 @@ class _CreateEventState extends State<CreateEvent> {
               CustomTextFormField(
                   hintText: "Event title",
                   prefixIcon: Icon(Icons.edit),
-                  controller: TextEditingController()),
+                  controller: titleController),
               SizedBox(
                 height: 16,
               ),
@@ -89,7 +117,7 @@ class _CreateEventState extends State<CreateEvent> {
               CustomTextFormField(
                   numberOfLines: 4,
                   hintText: "Event description",
-                  controller: TextEditingController()),
+                  controller: descriptionController),
               SizedBox(height: 16),
               Row(
                 children: [
@@ -99,12 +127,17 @@ class _CreateEventState extends State<CreateEvent> {
                   ),
                   Expanded(
                       child: Text(
-                    "Event Date",
+                    "${pickedDate.toDateFormat}",
                     style: Theme.of(context).textTheme.bodySmall,
                   )),
-                  Text(
-                    "Choose Date",
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  InkWell(
+                    onTap: () {
+                      chooseEventDate();
+                    },
+                    child: Text(
+                      "Choose Date",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   )
                 ],
               ),
@@ -119,12 +152,17 @@ class _CreateEventState extends State<CreateEvent> {
                   ),
                   Expanded(
                       child: Text(
-                    "Event Time",
+                    pickedTime.toFormattedTime,
                     style: Theme.of(context).textTheme.bodySmall,
                   )),
-                  Text(
-                    "Choose Time",
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  InkWell(
+                    onTap: () {
+                      chooseEventTime();
+                    },
+                    child: Text(
+                      "Choose Time",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   ),
                 ],
               ),
@@ -159,9 +197,9 @@ class _CreateEventState extends State<CreateEvent> {
                     ),
                     Expanded(
                         child: Text(
-                      "Choose Event Location",
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    )),
+                          "Choose Event Location",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        )),
                     Icon(
                       Icons.arrow_forward_ios,
                       color: ColorsManager.primary,
@@ -175,12 +213,54 @@ class _CreateEventState extends State<CreateEvent> {
               ),
               CustomElevatedButton(
                   padding: EdgeInsets.symmetric(vertical: 16),
-                  onPress: () {},
+                  onPress: () {
+                    createEvent();
+                  },
                   buttonText: 'Add Event')
             ],
           ),
         ),
       ),
     );
+  }
+
+  void chooseEventDate() async {
+    pickedDate = await showDatePicker(
+            context: context,
+            initialDate: pickedDate,
+            firstDate: DateTime.now(),
+            lastDate: DateTime.now().add(Duration(days: 365))) ??
+        pickedDate;
+    setState(() {});
+  }
+
+  void chooseEventTime() async {
+    pickedTime =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now()) ??
+            pickedTime;
+
+    finalTime = finalTime.copyWith(
+      hour: pickedTime.hour,
+      minute: pickedTime.minute,
+    );
+
+    setState(() {});
+  }
+
+  void createEvent() async {
+    EventDM eventDM = EventDM(
+        title: titleController.text,
+        description: descriptionController.text,
+        eventDate: Timestamp.fromMillisecondsSinceEpoch(
+            pickedDate.millisecondsSinceEpoch),
+        eventTime: Timestamp.fromMillisecondsSinceEpoch(
+            finalTime.millisecondsSinceEpoch),
+        ownerId: UserDM.currentUser!.id,
+        // ??
+        category: CategoryDM.categories[selectedIndex].name);
+    DialogUtils.showLoadingDialog(context);
+    await FireStoreHelpers.addEventToFireStore(eventDM);
+    DialogUtils.hideDialog(context);
+    Navigator.pop(context);
   }
 }

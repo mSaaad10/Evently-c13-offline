@@ -266,6 +266,8 @@ class _RegisterState extends State<Register> {
   Future<void> createUser(String userId) {
     UserDM userDM = UserDM(
         id: userId, userName: nameController.text, email: emailController.text);
+    UserDM.currentUser = userDM;
+
     return FireStoreHelpers.addUserToFireStore(userDM);
   }
 }

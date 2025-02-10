@@ -1,6 +1,8 @@
 import 'package:evently_c13_offline/core/colors_manager.dart';
 import 'package:evently_c13_offline/model/category_DM.dart';
-import 'package:evently_c13_offline/presentation/main_layout/home/widget/event_card.dart';
+import 'package:evently_c13_offline/model/eventDM.dart';
+import 'package:evently_c13_offline/model/user_DM.dart';
+import 'package:evently_c13_offline/presentation/main_layout/home/events_list_widget.dart';
 import 'package:evently_c13_offline/presentation/main_layout/home/widget/tab_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +18,7 @@ class _HomeTabState extends State<HomeTab> {
   var categories = CategoryDM.getCategories();
 
   int selectedIndex = 0;
+  List<EventDM> events = [];
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,7 @@ class _HomeTabState extends State<HomeTab> {
                       fontWeight: FontWeight.w500,
                       color: ColorsManager.white),
                 ),
-                Text('Muhammed Saad!',
+                Text(UserDM.currentUser!.userName,
                     style: GoogleFonts.inter(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
@@ -78,11 +81,14 @@ class _HomeTabState extends State<HomeTab> {
             ),
           ),
         ),
-        Expanded(
-            child: ListView.builder(
-          itemBuilder: (context, index) => EventCard(),
-          itemCount: 10,
-        ))
+        EventsListWidget(
+          categoryName: CategoryDM.categories[selectedIndex].name,
+        )
+        // Expanded(
+        //     child: ListView.builder(
+        //   itemBuilder: (context, index) => EventCard(eventDM: ,),
+        //   itemCount: 10,
+        // ))
       ],
     );
   }

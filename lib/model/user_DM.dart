@@ -1,4 +1,5 @@
 class UserDM {
+  static UserDM? currentUser;
   static const String collectionName = "Users";
   String id;
   String userName;
@@ -24,9 +25,9 @@ class UserDM {
 
   UserDM.fromJson(Map<String, dynamic> json)
       : this(
-          id: json["user_id"],
-          userName: json["user_name"],
-          email: json["email"],
-          favouriteEventIds: json["favourite_events_ids"],
-        );
+    id: json["user_id"],
+    userName: json["user_name"],
+    email: json["email"],
+    favouriteEventIds: json["favourite_events_ids"],
+  );
 }

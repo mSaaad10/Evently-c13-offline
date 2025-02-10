@@ -1,12 +1,14 @@
 import 'package:evently_c13_offline/core/assets_manager.dart';
 import 'package:evently_c13_offline/core/colors_manager.dart';
-import 'package:evently_c13_offline/model/category_DM.dart';
+import 'package:evently_c13_offline/core/utils/date_utils.dart';
+import 'package:evently_c13_offline/model/eventDM.dart';
 import 'package:flutter/material.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard({super.key, this.categoryDM});
+  const EventCard({super.key, required, required this.eventDM});
 
-  final CategoryDM? categoryDM;
+//final CategoryDM? categoryDM;
+  final EventDM eventDM;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +35,11 @@ class EventCard extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "21",
+                      "${eventDM.eventDate.toDate().day}",
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                     Text(
-                      "Nov",
+                      "${eventDM.eventDate.toDate().toMonthName}",
                       style: Theme.of(context).textTheme.labelMedium,
                     )
                   ],
@@ -53,7 +55,7 @@ class EventCard extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Text(
-                      'This is a Birthday Party',
+                          eventDM.title,
                       style: Theme.of(context).textTheme.labelSmall,
                     )),
                     Icon(Icons.favorite_border)
