@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:evently_c13_offline/core/assets_manager.dart';
 import 'package:evently_c13_offline/core/colors_manager.dart';
 import 'package:evently_c13_offline/core/dialog_utils.dart';
 import 'package:evently_c13_offline/core/utils/date_utils.dart';
 import 'package:evently_c13_offline/core/widgets/custom_elvated_button.dart';
 import 'package:evently_c13_offline/core/widgets/custom_text_form_field.dart';
+import 'package:evently_c13_offline/core/widgets/tab_bar_widget.dart';
 import 'package:evently_c13_offline/firebase_helpers/firestore/firestore_helpers.dart';
 import 'package:evently_c13_offline/model/category_DM.dart';
 import 'package:evently_c13_offline/model/eventDM.dart';
 import 'package:evently_c13_offline/model/user_DM.dart';
-import 'package:evently_c13_offline/presentation/main_layout/home/widget/tab_widget.dart';
 import 'package:flutter/material.dart';
 
 class CreateEvent extends StatefulWidget {
@@ -27,11 +26,13 @@ class _CreateEventState extends State<CreateEvent> {
   DateTime pickedDate = DateTime.now();
   TimeOfDay pickedTime = TimeOfDay.now();
   DateTime finalTime = DateTime.now();
+  late CategoryDM selectedCategory;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    selectedCategory = CategoryDM.categories[0];
     titleController = TextEditingController();
     descriptionController = TextEditingController();
   }
@@ -63,35 +64,43 @@ class _CreateEventState extends State<CreateEvent> {
                     color: ColorsManager.black,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Image.asset(AssetsManager.football)),
+                  child: Image.asset(selectedCategory.imagePath)),
               SizedBox(
                 height: 8,
               ),
-              DefaultTabController(
-                length: CategoryDM.categories.length,
-                child: TabBar(
-                    isScrollable: true,
-                    indicatorColor: Colors.transparent,
-                    dividerColor: Colors.transparent,
-                    tabAlignment: TabAlignment.start,
-                    labelPadding: EdgeInsets.symmetric(horizontal: 6),
-                    onTap: (index) {
-                      selectedIndex = index;
-                      setState(() {});
-                    },
-                    tabs: CategoryDM.categories
-                        .map(
-                          (category) => TabWidget(
-                          selectedContentColor: ColorsManager.white,
-                          unSelectedContentColor: ColorsManager.primary,
-                          selectedBgColor: ColorsManager.primary,
-                          unSelectedBgColor: Colors.transparent,
-                          categoryDM: category,
-                          isSelected:
-                          CategoryDM.categories.indexOf(category) ==
-                              selectedIndex),
-                    )
-                        .toList()),
+              // DefaultTabController(
+              //   length: CategoryDM.categories.length,
+              //   child: TabBar(
+              //       isScrollable: true,
+              //       indicatorColor: Colors.transparent,
+              //       dividerColor: Colors.transparent,
+              //       tabAlignment: TabAlignment.start,
+              //       labelPadding: EdgeInsets.symmetric(horizontal: 6),
+              //       onTap: (index) {
+              //         selectedIndex = index;
+              //         setState(() {});
+              //       },
+              //       tabs: CategoryDM.categories
+              //           .map(
+              //             (category) => TabWidget(
+              //             selectedContentColor: ColorsManager.white,
+              //             unSelectedContentColor: ColorsManager.primary,
+              //             selectedBgColor: ColorsManager.primary,
+              //             unSelectedBgColor: Colors.transparent,
+              //             categoryDM: category,
+              //             isSelected:
+              //             CategoryDM.categories.indexOf(category) ==
+              //                 selectedIndex),
+              //       )
+              //           .toList()),
+              // ),
+              TabBarWidget(
+                categories: CategoryDM.categories,
+                onTabClicked: onCategoryTabClicked,
+                selectedBg: ColorsManager.primary,
+                unSelectedBg: Colors.transparent,
+                selectedContentColor: ColorsManager.white,
+                unSelectedContentColor: ColorsManager.primary,
               ),
               Text(
                 "Title",
@@ -102,7 +111,10 @@ class _CreateEventState extends State<CreateEvent> {
               ),
               CustomTextFormField(
                   hintText: "Event title",
-                  prefixIcon: Icon(Icons.edit),
+                  prefixIcon: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                   controller: titleController),
               SizedBox(
                 height: 16,
@@ -121,7 +133,10 @@ class _CreateEventState extends State<CreateEvent> {
               SizedBox(height: 16),
               Row(
                 children: [
-                  Icon(Icons.date_range_outlined),
+                  Icon(
+                    Icons.date_range_outlined,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                   SizedBox(
                     width: 10,
                   ),
@@ -146,7 +161,10 @@ class _CreateEventState extends State<CreateEvent> {
               ),
               Row(
                 children: [
-                  Icon(Icons.date_range_outlined),
+                  Icon(
+                    Icons.date_range_outlined,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                   SizedBox(
                     width: 10,
                   ),
@@ -224,6 +242,11 @@ class _CreateEventState extends State<CreateEvent> {
     );
   }
 
+  onCategoryTabClicked(CategoryDM categoryDM) {
+    selectedCategory = categoryDM;
+    setState(() {});
+  }
+
   void chooseEventDate() async {
     pickedDate = await showDatePicker(
             context: context,
@@ -257,7 +280,7 @@ class _CreateEventState extends State<CreateEvent> {
             finalTime.millisecondsSinceEpoch),
         ownerId: UserDM.currentUser!.id,
         // ??
-        category: CategoryDM.categories[selectedIndex].name);
+        category: selectedCategory.name);
     DialogUtils.showLoadingDialog(context);
     await FireStoreHelpers.addEventToFireStore(eventDM);
     DialogUtils.hideDialog(context);

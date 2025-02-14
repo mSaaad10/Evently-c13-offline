@@ -1,9 +1,9 @@
 import 'package:evently_c13_offline/core/colors_manager.dart';
+import 'package:evently_c13_offline/core/widgets/tab_bar_widget.dart';
 import 'package:evently_c13_offline/model/category_DM.dart';
 import 'package:evently_c13_offline/model/eventDM.dart';
 import 'package:evently_c13_offline/model/user_DM.dart';
 import 'package:evently_c13_offline/presentation/main_layout/home/events_list_widget.dart';
-import 'package:evently_c13_offline/presentation/main_layout/home/widget/tab_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,10 +15,16 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  var categories = CategoryDM.getCategories();
+  late CategoryDM selectedCategory;
 
-  int selectedIndex = 0;
   List<EventDM> events = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    selectedCategory = CategoryDM.allCategories[0];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +37,7 @@ class _HomeTabState extends State<HomeTab> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16)),
-              color: ColorsManager.primary),
+              color: Theme.of(context).primaryColor),
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,39 +57,48 @@ class _HomeTabState extends State<HomeTab> {
                 SizedBox(
                   height: 16,
                 ),
-                DefaultTabController(
-                  length: categories.length,
-                  child: TabBar(
-                      onTap: (index) {
-                        selectedIndex = index;
-                        setState(() {});
-                      },
-                      tabAlignment: TabAlignment.start,
-                      labelPadding: EdgeInsets.symmetric(horizontal: 10),
-                      indicatorPadding: EdgeInsets.zero,
-                      isScrollable: true,
-                      indicatorColor: Colors.transparent,
-                      dividerColor: Colors.transparent,
-                      tabs: categories
-                          .map(
-                            (category) => TabWidget(
-                                selectedContentColor: ColorsManager.primary,
-                                unSelectedContentColor: ColorsManager.white,
-                                selectedBgColor: ColorsManager.white,
-                                unSelectedBgColor: Colors.transparent,
-                                categoryDM: category,
-                                isSelected: categories.indexOf(category) ==
-                                    selectedIndex),
-                          )
-                          .toList()),
+                // DefaultTabController(
+                //   length: CategoryDM.allCategories.length,
+                //   child: TabBar(
+                //       onTap: (index) {
+                //         selectedIndex = index;
+                //         print(selectedIndex);
+                //         setState(() {});
+                //       },
+                //       tabAlignment: TabAlignment.start,
+                //       labelPadding: EdgeInsets.symmetric(horizontal: 10),
+                //       indicatorPadding: EdgeInsets.zero,
+                //       isScrollable: true,
+                //       indicatorColor: Colors.transparent,
+                //       dividerColor: Colors.transparent,
+                //       tabs: CategoryDM.allCategories
+                //           .map(
+                //             (category) => TabWidget(
+                //                 selectedContentColor: ColorsManager.primary,
+                //                 unSelectedContentColor: ColorsManager.white,
+                //                 selectedBgColor: ColorsManager.white,
+                //                 unSelectedBgColor: Colors.transparent,
+                //                 categoryDM: category,
+                //                 isSelected: CategoryDM.allCategories.indexOf(category) ==
+                //                     selectedIndex),
+                //           )
+                //           .toList()),
+                // ),
+                TabBarWidget(
+                  categories: CategoryDM.allCategories,
+                  onTabClicked: onCategoryTabClicked,
+                  selectedBg: ColorsManager.ofWhite,
+                  unSelectedBg: Colors.transparent,
+                  selectedContentColor: ColorsManager.primary,
+                  unSelectedContentColor: ColorsManager.white,
                 ),
               ],
             ),
           ),
         ),
         EventsListWidget(
-          categoryName: CategoryDM.categories[selectedIndex].name,
-        )
+          categoryName: selectedCategory.name,
+        ),
         // Expanded(
         //     child: ListView.builder(
         //   itemBuilder: (context, index) => EventCard(eventDM: ,),
@@ -91,5 +106,10 @@ class _HomeTabState extends State<HomeTab> {
         // ))
       ],
     );
+  }
+
+  void onCategoryTabClicked(CategoryDM categoryDm) {
+    selectedCategory = categoryDm;
+    setState(() {});
   }
 }

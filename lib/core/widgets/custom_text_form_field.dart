@@ -26,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
       // maxLines: numberOfLines,
       //minLines: numberOfLines,
       validator: validator,

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EventDM {
   static const String collectionName = 'Events';
+  String id;
   String title;
   String description;
   Timestamp eventDate;
@@ -13,6 +14,7 @@ class EventDM {
   int? lng;
 
   EventDM({
+    this.id = '',
     required this.title,
     required this.description,
     required this.eventDate,
@@ -34,13 +36,14 @@ class EventDM {
       "category": category,
       "lat": lat,
       "lng": lng,
+      "event_id": id,
     };
   }
 
   // create obj from EventDM
   EventDM.fromJson(Map<String, dynamic> json)
       : this(
-          title: json["event_title"],
+    title: json["event_title"],
           description: json["event_description"],
           eventDate: json["event_date"],
           eventTime: json["event_time"],
@@ -48,5 +51,6 @@ class EventDM {
           category: json["event_title"],
           lat: json["lat"],
           lng: json["lng"],
+          id: json["event_id"],
         );
 }

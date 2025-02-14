@@ -1,18 +1,19 @@
 class UserDM {
   static UserDM? currentUser;
   static const String collectionName = "Users";
-  String id;
-  String userName;
+  late String id;
+  late String userName;
 
-  String email;
-  List<String>? favouriteEventIds;
+  late String email;
+  late List<String> favouriteEventIds;
 
   UserDM({
     required this.id,
     required this.userName,
     required this.email,
-    this.favouriteEventIds,
-  });
+  }) {
+    favouriteEventIds = [];
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -23,11 +24,24 @@ class UserDM {
     };
   }
 
-  UserDM.fromJson(Map<String, dynamic> json)
-      : this(
-    id: json["user_id"],
-    userName: json["user_name"],
-    email: json["email"],
-    favouriteEventIds: json["favourite_events_ids"],
-  );
+  UserDM.fromJson(Map<String, dynamic> json) {
+    id = json["user_id"];
+    userName = json["user_name"];
+    email = json["email"];
+    favouriteEventIds = (json["favourite_events_ids"] as List<dynamic>)
+        .map(
+          (item) => item.toString(),
+        )
+        .toList();
+  }
+
+  bool isFavEvent(String eventId) {
+    return favouriteEventIds.contains(eventId);
+  }
+//     : this(
+//   id: json["user_id"],
+//   userName: json["user_name"],
+//   email: json["email"],
+//   favouriteEventIds: (json["favourite_events_ids"] as List<dynamic>).map((item) => item.toString(),).toList(),
+// );
 }

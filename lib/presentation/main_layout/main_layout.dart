@@ -1,6 +1,6 @@
 import 'package:evently_c13_offline/core/routes_manager/routes.dart';
 import 'package:evently_c13_offline/presentation/main_layout/home/home_tab.dart';
-import 'package:evently_c13_offline/presentation/main_layout/love/love.dart';
+import 'package:evently_c13_offline/presentation/main_layout/love/favTab.dart';
 import 'package:evently_c13_offline/presentation/main_layout/map/maps_tab.dart';
 import 'package:evently_c13_offline/presentation/main_layout/profile/profile.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class _MAinLayOutState extends State<MAinLayOut> {
   var tabs = [
     HomeTab(),
     Maps(),
-    Love(),
+    FavTab(),
     Profile(),
   ];
 

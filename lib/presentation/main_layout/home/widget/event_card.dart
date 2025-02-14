@@ -1,14 +1,30 @@
 import 'package:evently_c13_offline/core/assets_manager.dart';
 import 'package:evently_c13_offline/core/colors_manager.dart';
 import 'package:evently_c13_offline/core/utils/date_utils.dart';
+import 'package:evently_c13_offline/firebase_helpers/firestore/firestore_helpers.dart';
 import 'package:evently_c13_offline/model/eventDM.dart';
+import 'package:evently_c13_offline/model/user_DM.dart';
 import 'package:flutter/material.dart';
 
-class EventCard extends StatelessWidget {
+class EventCard extends StatefulWidget {
   const EventCard({super.key, required, required this.eventDM});
 
 //final CategoryDM? categoryDM;
   final EventDM eventDM;
+
+  @override
+  State<EventCard> createState() => _EventCardState();
+}
+
+class _EventCardState extends State<EventCard> {
+  late bool isFavourite;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isFavourite = UserDM.currentUser!.isFavEvent(widget.eventDM.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +51,11 @@ class EventCard extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "${eventDM.eventDate.toDate().day}",
+                      "${widget.eventDM.eventDate.toDate().day}",
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                     Text(
-                      "${eventDM.eventDate.toDate().toMonthName}",
+                      "${widget.eventDM.eventDate.toDate().toMonthName}",
                       style: Theme.of(context).textTheme.labelMedium,
                     )
                   ],
@@ -55,10 +71,23 @@ class EventCard extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Text(
-                          eventDM.title,
+                      widget.eventDM.title,
                       style: Theme.of(context).textTheme.labelSmall,
                     )),
-                    Icon(Icons.favorite_border)
+                    InkWell(
+                        onTap: () {
+                          isFavourite = !isFavourite;
+
+                          if (isFavourite) {
+                            addEventToFav();
+                          } else {
+                            removeEventFromFav();
+                          }
+                          setState(() {});
+                        },
+                        child: Icon(isFavourite
+                            ? Icons.favorite
+                            : Icons.favorite_border))
                   ],
                 ),
               ),
@@ -67,5 +96,14 @@ class EventCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void addEventToFav() async {
+    print(widget.eventDM.id);
+    await FireStoreHelpers.addEventToFav(widget.eventDM.id);
+  }
+
+  void removeEventFromFav() async {
+    await FireStoreHelpers.removeEventFromFav(widget.eventDM.id);
   }
 }

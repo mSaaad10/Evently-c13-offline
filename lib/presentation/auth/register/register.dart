@@ -82,7 +82,10 @@ class _RegisterState extends State<Register> {
                         return null;
                       },
                       hintText: "Name",
-                      prefixIcon: Icon(Icons.person),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                       controller: nameController),
                   const SizedBox(
                     height: 16,
@@ -100,7 +103,10 @@ class _RegisterState extends State<Register> {
                         return null;
                       },
                       hintText: "Email",
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                       controller: emailController),
                   const SizedBox(
                     height: 16,
@@ -115,16 +121,22 @@ class _RegisterState extends State<Register> {
                       }
                     },
                     hintText: "Password",
-                    prefixIcon: Icon(Icons.lock),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                     isObscure: securePassword,
                     suffixIcon: IconButton(
                       onPressed: () {
                         securePassword = !securePassword;
                         setState(() {});
                       },
-                      icon: Icon(securePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility),
+                      icon: Icon(
+                        securePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
                     controller: passwordController,
                   ),
@@ -141,7 +153,10 @@ class _RegisterState extends State<Register> {
                       }
                     },
                     hintText: "Re Password",
-                    prefixIcon: Icon(Icons.lock),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                     isObscure: securePasswordConfirmation,
                     suffixIcon: IconButton(
                       onPressed: () {
@@ -149,9 +164,12 @@ class _RegisterState extends State<Register> {
                             !securePasswordConfirmation;
                         setState(() {});
                       },
-                      icon: Icon(securePasswordConfirmation
-                          ? Icons.visibility_off
-                          : Icons.visibility),
+                      icon: Icon(
+                        securePasswordConfirmation
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
                     controller: rePasswordController,
                   ),

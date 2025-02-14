@@ -71,7 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                       hintText: "Email",
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                       controller: emailController),
                   const SizedBox(
                     height: 16,
@@ -86,7 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     hintText: "Password",
-                    prefixIcon: Icon(Icons.lock),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                     isObscure: secure,
                     suffixIcon: IconButton(
                       onPressed: () {
@@ -94,7 +100,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {});
                       },
                       icon: Icon(
-                          secure ? Icons.visibility_off : Icons.visibility),
+                        secure ? Icons.visibility_off : Icons.visibility,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
                     controller: passwordController,
                   ),
