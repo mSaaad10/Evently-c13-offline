@@ -87,9 +87,9 @@ class _HomeTabState extends State<HomeTab> {
                 TabBarWidget(
                   categories: CategoryDM.allCategories,
                   onTabClicked: onCategoryTabClicked,
-                  selectedBg: ColorsManager.ofWhite,
+                  selectedBg: Theme.of(context).colorScheme.onPrimary,
                   unSelectedBg: Colors.transparent,
-                  selectedContentColor: ColorsManager.primary,
+                  selectedContentColor: Theme.of(context).colorScheme.onSurface,
                   unSelectedContentColor: ColorsManager.white,
                 ),
               ],

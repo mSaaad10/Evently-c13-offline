@@ -10,5 +10,3 @@ void main() async {
   );
   runApp(const EventlyApp());
 }
-
-class Facebook {}

@@ -6,9 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   static final ThemeData light = ThemeData(
       colorScheme: ColorScheme.fromSeed(
-          seedColor: ColorsManager.primary,
-          secondary: ColorsManager.black,
-          onSecondary: ColorsManager.white),
+        seedColor: ColorsManager.primary,
+        secondary: ColorsManager.black,
+        onSecondary: ColorsManager.white,
+        onPrimary: ColorsManager.ofWhite,
+        onSurface: ColorsManager.primary,
+      ),
       primaryColor: ColorsManager.primary,
       useMaterial3: false,
       appBarTheme: AppBarTheme(
@@ -116,9 +119,12 @@ class AppTheme {
             fontWeight: FontWeight.w700,
             color: ColorsManager.black),
       ));
+
   static final ThemeData dark = ThemeData(
       primaryColor: ColorsManager.darkPrimary,
       colorScheme: ColorScheme.fromSeed(
+        onPrimary: ColorsManager.primary,
+        onSurface: ColorsManager.white,
         seedColor: ColorsManager.darkPrimary,
         secondary: ColorsManager.white,
         onSecondary: ColorsManager.darkPrimary,
@@ -204,7 +210,7 @@ class AppTheme {
             fontWeight: FontWeight.w500),
         bodyMedium: GoogleFonts.inter(
             fontSize: 20,
-            color: ColorsManager.white,
+            color: ColorsManager.primary,
             fontWeight: FontWeight.w500),
         bodyLarge: GoogleFonts.inter(
             fontSize: 16,
