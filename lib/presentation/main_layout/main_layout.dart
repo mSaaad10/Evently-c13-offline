@@ -4,6 +4,7 @@ import 'package:evently_c13_offline/presentation/main_layout/love/favTab.dart';
 import 'package:evently_c13_offline/presentation/main_layout/map/maps_tab.dart';
 import 'package:evently_c13_offline/presentation/main_layout/profile/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MAinLayOut extends StatefulWidget {
   MAinLayOut({super.key});
@@ -43,15 +44,19 @@ class _MAinLayOutState extends State<MAinLayOut> {
         onTap: (index) {
           selectedIndex = index;
           setState(() {});
-            },
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.map_outlined), label: 'Maps'),
-              BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Fav'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: 'Profile'),
-            ]),
+        },
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home),
+              label: AppLocalizations.of(context)!.home_tab),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.map_outlined),
+              label: AppLocalizations.of(context)!.map_tab),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite),
+              label: AppLocalizations.of(context)!.fav_tab),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: AppLocalizations.of(context)!.profile_tab),
+        ]),
       );
 
 // void showCreateEventBottomSheet() {

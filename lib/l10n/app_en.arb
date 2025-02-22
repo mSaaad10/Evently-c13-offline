@@ -1,0 +1,13 @@
+{
+"email": "Email",
+"password": "Password",
+"forget_password": "Forget Password",
+"login": "Login",
+"register": "Register",
+"login_by_google": "Login By Google",
+"create_account": "Create Account",
+"home_tab": "Home",
+"map_tab": "map",
+"fav_tab": "fav",
+"profile_tab": "Profile"
+}

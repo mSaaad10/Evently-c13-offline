@@ -1,0 +1,13 @@
+{
+"email": "البريد الالكتروني",
+"password": "كلمه المرور",
+"forget_password": "نسيت الباسورد",
+"login": "دخول",
+"register": "تسجيل",
+"login_by_google": "الدخول بواسطه جوجل",
+"create_account": "انشاء حساب",
+"home_tab": "الرئيسيه",
+"map_tab": "الخرائط",
+"fav_tab": "المفصل",
+"profile_tab": "ملفي"
+}

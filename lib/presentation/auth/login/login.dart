@@ -11,7 +11,7 @@ import 'package:evently_c13_offline/firebase_helpers/firestore/firestore_helpers
 import 'package:evently_c13_offline/model/user_DM.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -61,7 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomTextFormField(
                       validator: (input) {
                         // bad scenario
-                        if (input == null || input.trim().isEmpty) {
+                        if (input == null || input
+                            .trim()
+                            .isEmpty) {
                           return 'Plz, enter email';
                         }
                         // bad scenario
@@ -70,10 +72,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
-                      hintText: "Email",
+                      hintText: AppLocalizations.of(context)!.email,
                       prefixIcon: Icon(
                         Icons.email,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .secondary,
                       ),
                       controller: emailController),
                   const SizedBox(
@@ -81,17 +86,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   CustomTextFormField(
                     validator: (input) {
-                      if (input == null || input.trim().isEmpty) {
+                      if (input == null || input
+                          .trim()
+                          .isEmpty) {
                         return 'Plz, enter password';
                       }
                       if (input.length < 6) {
                         return 'Password at least 6 characters';
                       }
                     },
-                    hintText: "Password",
+                    hintText: AppLocalizations.of(context)!.password,
                     prefixIcon: Icon(
                       Icons.lock,
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .secondary,
                     ),
                     isObscure: secure,
                     suffixIcon: IconButton(
@@ -101,7 +111,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       icon: Icon(
                         secure ? Icons.visibility_off : Icons.visibility,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .secondary,
                       ),
                     ),
                     controller: passwordController,
@@ -109,24 +122,33 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                       alignment: Alignment.centerRight,
                       child: CustomTextButton(
-                          onPress: () {}, textButton: "Forget Password?")),
+                          onPress: () {},
+                          textButton: AppLocalizations.of(context)!
+                              .forget_password)),
                   SizedBox(
-                      width: MediaQuery.sizeOf(context).width,
+                      width: MediaQuery
+                          .sizeOf(context)
+                          .width,
                       height: 56,
                       child: CustomElevatedButton(
-                          onPress: login, buttonText: "Login")),
+                          onPress: login,
+                          buttonText: AppLocalizations.of(context)!.login)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Don’t Have Account ?",
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodySmall,
                       ),
                       CustomTextButton(
                           onPress: () {
                             Navigator.pushNamed(context, Routes.register);
                           },
-                          textButton: "Create Account")
+                          textButton: AppLocalizations.of(context)!
+                              .create_account)
                     ],
                   ),
                   const SizedBox(
@@ -148,8 +170,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             width: 4,
                           ),
-                          Text('Login With Google',
-                              style: Theme.of(context).textTheme.bodyMedium),
+                          Text(AppLocalizations.of(context)!.login_by_google,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyMedium),
                         ],
                       ),
                     ),
